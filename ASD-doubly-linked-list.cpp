@@ -14,7 +14,7 @@ struct list::node {  // descrivo qui, fuori dal namespace, come e' fatta la stru
 };
 
 /*************************************************/
-/* Implementazione delle operazioni di utilita'  */
+/* Implementazione delle operazioni di utilita'Â  */
 /*************************************************/
 
 void readFromStream(istream& str, List& l) {
@@ -68,25 +68,34 @@ void list::createEmpty(List& l) {
 
 /* "smantella" la lista svuotandola */
 void list::clear(const List& l) {
-
+	List p = l->next;
+	List aux = p;
+	while(aux != l)
+	{	
+		p = aux;
+		p->prev->next = p->next;
+		p->next->prev = p->prev;
+		delete p;
+		p = NULL;
+		aux=aux->next;
+	}
 }
 
 /* restituisce l'elemento in posizione pos se presente; restituisce un elemento 
 che per convenzione si decide che rappresenta l'elemento vuoto altrimenti*/
 Elem list::get(int pos, const List& l) {
-   int cont=0;
+  int cont=0;
   List p=l->next;
   while(cont!=pos)
   {
   	if(p==l) 
   	{
-  		cout<<"posizione sbagliata"<<endl;
-  		break;
+		return -1000000; //Elemento vuoto
   	}
   	p=p->next;
   	cont++;
   }
-   return p->info;
+  return p->info;
 }
 
 /* modifica l'elemento in posizione pos, se la posizione e' ammissibile */
@@ -131,6 +140,7 @@ void list::add(int pos, Elem e, const List& l) {
 
 /* inserisce l'elemento alla fine della lista */
 void list::addRear(Elem e,  const List& l) {
+		
     list::node *aux=new list::node;
     aux->info=e;
     if(l->next==l) l->next=aux;
@@ -153,11 +163,41 @@ void list::addFront(Elem e, const List& l) {
 
 /* cancella l'elemento in posizione pos dalla lista */
 void list::removePos(int pos, const List& l) {
+	int cont=0;
+  	List p=l->next;
+  	while(cont!=pos)
+  	{
+  		if(p==l) 
+  		{
+  			cout<<"posizione sbagliata"<<endl;
+  			return;
+  		}
+  		p=p->next;
+  		cont++;
+  	}
+	p->prev->next = p->next;
+	p->next->prev = p->prev;
+	delete p;
+	p = NULL;
 
 }
 
  /* cancella tutte le occorrenze dell'elemento elem, se presenti, dalla lista */
 void list::removeEl(Elem e, const List& l) {
+	List p = l->next;
+	List aux;
+	while(p != l)
+	{
+  		if(p->info==e)
+  		{
+  			aux = p;
+			aux->prev->next = aux->next;
+			aux->next->prev = aux->prev;
+			delete aux;
+			aux = NULL;
+  		}
+  		p = p->next;
+	}
 
 }
 
@@ -168,7 +208,13 @@ bool list::isEmpty(const List& l) {
 
  /* restituisce la dimensione della lista */
 int list::size(const List& l) {
-   
+   	List p = l->next;
+   	int cont = 0;
+	while(p != l)
+	{
+		cont++;
+		p = p->next;
+	}
+	return cont;
 }
-
 
