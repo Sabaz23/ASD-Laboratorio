@@ -59,8 +59,9 @@ void print(const List& l) {
 /* crea la lista vuota */
 void list::createEmpty(List& l) {
    
-   list::node *sent=new list::node;
-   l=sent;
+   list::node *sent=new list::node; //Creiamo la sentinella
+   l=sent; //La nuova lista punta alla sentinella appena creata
+   //Visto che è presente soltanto la sentinella, dovrà puntare sia percendemente che successivamente a se stessa
    sent->next=l;
    sent->prev=l;
    
