@@ -73,6 +73,7 @@ void list::clear(const List& l) {
 	List aux = p;
 	while(aux != l)
 	{	
+		//Se non usiamo il puntatore p per eliminare i file, non possiamo scorrere le lista una volta eliminata
 		p = aux;
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
